@@ -1,0 +1,25 @@
+Data: file is clpm_0217.dat;
+
+Variable: names are c1-c4 g a1-a2 cg1-cg2 sx ag1 in1 edu pb1 e1-e4 s1-s7 ag2 in2 pb2;
+usevariables are c2 c4 a1-a2 sx ag1 in1 edu pb1 e1-e4 s1-s7 ag2 in2 pb2;
+missing=all(-999);
+
+Analysis: estimator=MLR;
+
+Model:
+c4 ON c2;
+c4 ON a1;
+
+a2 ON a1;
+a2 ON c2;
+
+c4 WITH a2;
+c2 WITH a1;
+
+c2 ON sx ag1 in1 edu pb1 e1-e4 s1-s7;
+c4 ON sx edu e1-e4 s1-s7 ag2 in2 pb2;
+
+a1 ON sx ag1 in1 edu pb1 e1-e4 s1-s7;
+a2 ON sx edu e1-e4 s1-s7 ag2 in2 pb2;
+
+Output:sampstat residual tech1 tech4 STANDARDIZED;
