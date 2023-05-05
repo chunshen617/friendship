@@ -1,6 +1,3 @@
-library(tidyverse)
-library(scales)
-
 ###########load data###########
 #friendship
 friend <- read.csv('friend_baseline.csv')
