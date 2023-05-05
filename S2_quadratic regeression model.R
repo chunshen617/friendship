@@ -15,11 +15,11 @@ covs$site <- as.factor(covs$site)
 
 #Data scale: the number of friends is log-transformed and mean centered
 friend$cf_log <- log10(friend$totalCloseFriend+1)
-friend$cf_log_c <- scale(friend$cf_log,scale = F)
+friend$cf_log_c <- scale(friend$cf_log)
 
 #prepare data frame for quadratic analysis
 cfD <- subset(friend, select = c("cf_log_c"))
-Dcf <- cbind(cfD,mh_s,cog_s,covs)
+Dcf <- cbind(cfD,mh,cog,covs)
 DVn <- colnames(Dcf[,2:31])
 
 #quadratic regression function
@@ -54,6 +54,11 @@ lnR <- function(y,Data){
 }
 M.ln <- apply(Dcf[,2:31], 2, function(x) lnR(x,Dcf))
 
+covR <- function(y,Data){
+  lm(y ~ sex+age+income+edu+bmi+pbs+eth+site,data = Data)
+}
+M.cov <- apply(Dcf[,2:31], 2, function(x) covR(x,Dcf))
+                            
 #create result table: r square, delta quadratic r square
 Rsquare <- function(Mqua,Mln){
   Mqua.sum = lapply(Mqua, summary)
@@ -66,11 +71,14 @@ Rsquare <- function(Mqua,Mln){
   return(tbl.result)
 }
 
-result.Rsquare <- Rsquare(M.qua,M.ln)
+result.Rsquare.quadratic <- Rsquare(M.qua,M.ln)
+result.Rsquare.linear <- Rsquare(M.ln,M.cov)
+result.Rsquare <- data.frame(delta.adjR2.linear = result.Rsquare.linear[,6],
+                             delta.adjR2.quadratic = result.Rsquare.quadratic[,6])
 
-#save results
-result.QR <- cbind(result.qua.coef,result.Rsquare)
-write.csv(result.QR,file = "Result_cf_mh&cog_quadraticR_baseline.csv")
+#save results                         
+result.QR <- cbind.data.frame(result.qua.coef,result.Rsquare)
+write.csv(result.baseline,file = "Result_beh_QR.csv")
 
 #model comparison
 F.modelComp <- list()
