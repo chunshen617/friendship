@@ -1,1 +1,1 @@
-This repository provides scripts for the analysis in "Brain and molecular mechanisms underlying the nonlinear association between close friendships, mental health, and cognition in children". See https://doi.org/10.1101/2022.11.02.22281840 for details.
+This repository provides scripts for the analysis in "Shen et al. Brain and molecular mechanisms underlying the nonlinear association between close friendships, mental health, and cognition in children. eLife, 2023."
